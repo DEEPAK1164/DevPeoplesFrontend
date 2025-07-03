@@ -8,13 +8,17 @@ function Navbar() {
   const handleMenuMouseLeave = () => setOpen(false);
 
   return (
-    <nav className="w-full bg-gradient-to-r from-pink-500 via-red-400 to-yellow-400 shadow flex items-center justify-between px-4 py-3 fixed top-0 left-0 z-50">
+    <nav className="w-full bg-gradient-to-r from-pink-500 via-red-400 to-yellow-400 shadow-lg flex items-center justify-between px-6 py-4 fixed top-0 left-0 z-50">
       {/* App Name */}
-      <div className="text-white text-2xl font-bold drop-shadow">DevPeoples</div>
+      <div className="flex items-center gap-2">
+        <span className="text-white text-3xl font-extrabold drop-shadow tracking-wide font-sans">
+          <span className="inline-block animate-bounce">🔥</span> DevPeoples
+        </span>
+      </div>
       {/* User Dropdown */}
       <div className="relative">
         <button
-          className="p-2 rounded-full hover:bg-white/20 transition text-white text-2xl cursor-pointer flex items-center select-none"
+          className="p-2 rounded-full hover:bg-white/20 transition text-white text-3xl cursor-pointer flex items-center select-none"
           onClick={() => setOpen((prev) => !prev)}
           aria-label="User menu"
         >
@@ -23,7 +27,7 @@ function Navbar() {
         {open && (
           <div
             ref={menuRef}
-            className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+            className="absolute right-0 mt-3 w-56 bg-white border border-pink-100 rounded-xl shadow-2xl z-50"
             onMouseLeave={handleMenuMouseLeave}
             onMouseEnter={() => setOpen(true)}
           >
@@ -31,7 +35,7 @@ function Navbar() {
               <li>
                 <a
                   href="/profile"
-                  className="block px-4 py-2 text-gray-700 hover:bg-pink-50 rounded transition"
+                  className="block px-5 py-3 text-gray-700 font-semibold hover:bg-pink-50 rounded-xl transition"
                 >
                   Profile
                 </a>
@@ -39,7 +43,7 @@ function Navbar() {
               <li>
                 <a
                   href="/requests"
-                  className="block px-4 py-2 text-gray-700 hover:bg-pink-50 rounded transition"
+                  className="block px-5 py-3 text-gray-700 font-semibold hover:bg-pink-50 rounded-xl transition"
                 >
                   Requests
                 </a>
@@ -47,14 +51,14 @@ function Navbar() {
               <li>
                 <a
                   href="/connections"
-                  className="block px-4 py-2 text-gray-700 hover:bg-pink-50 rounded transition"
+                  className="block px-5 py-3 text-gray-700 font-semibold hover:bg-pink-50 rounded-xl transition"
                 >
                   Connections
                 </a>
               </li>
               <li>
                 <button
-                  className="w-full text-left px-4 py-2 text-gray-700 hover:bg-pink-50 rounded transition"
+                  className="w-full text-left px-5 py-3 text-gray-700 font-semibold hover:bg-pink-50 rounded-xl transition"
                 >
                   Logout
                 </button>

@@ -2,7 +2,7 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-r from-pink-500 via-red-400 to-yellow-400 text-white mt-8 fixed bottom-0 left-0 z-40">
+    <footer className="w-full bg-gradient-to-r from-pink-500 via-red-400 to-yellow-400 text-white shadow-inner">
       <div className="max-w-4xl mx-auto px-4 py-8 flex flex-col gap-6">
         {/* Dummy Review Section */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -10,7 +10,7 @@ function Footer() {
             <img
               src="https://randomuser.me/api/portraits/men/32.jpg"
               alt="User"
-              className="w-12 h-12 rounded-full border-2 border-white shadow"
+              className="w-14 h-14 rounded-full border-2 border-white shadow"
             />
             <div>
               <p className="font-semibold text-lg">John Doe</p>
