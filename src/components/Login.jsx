@@ -11,11 +11,14 @@ function Login() {
     const res=axios.post("http://localhost:7777/login",{
       emailId:eml,
       password:pwd
+    },{
+      withCredentials: true // This allows cookies to be sent with the request
     })
      }catch(err){
     console.error("Login failed:", err);
   }
    }
+
 
 
   return (
