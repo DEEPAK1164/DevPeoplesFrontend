@@ -1,9 +1,15 @@
 import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+
+// Importing useSelector to access Redux state if needed
+// If you need to access user data or any other state from Redux, you can use this
+// import { useSelector } from 'react-redux';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
-
+  const res = useSelector((store) => store.user); // Accessing user data from Redux store
+  console.log("User data from Redux:", res);
   // Hide dropdown when mouse leaves the dropdown box
   const handleMenuMouseLeave = () => setOpen(false);
 
@@ -22,7 +28,15 @@ function Navbar() {
           onClick={() => setOpen((prev) => !prev)}
           aria-label="User menu"
         >
-          👤
+          {res?.data?.photoUrl ? (
+            <img
+              src={res.data.photoUrl}
+              alt={res.data.firstName || "User"}
+              className="w-10 h-10 rounded-full border-2 border-white shadow object-cover"
+            />
+          ) : (
+            <span role="img" aria-label="User">👤</span>
+          )}
         </button>
         {open && (
           <div

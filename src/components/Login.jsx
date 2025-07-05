@@ -1,19 +1,37 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
+import {useNavigate} from 'react-router-dom';
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const[pwd,setPassword] = useState("");
   const[eml,setEmailId] = useState("");
 
-   const handleLogin=()=>{
+  // Initialize Redux dispatch
+  // This allows you to dispatch actions to the Redux store
+  // Ensure you have set up Redux and imported the necessary hooks
+  // For example, you might want to dispatch an action to update the user state after login
+  // If you have a user slice, you can import it and use it here
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
+   const handleLogin=async()=>{
+ 
      try{
-    const res=axios.post("http://localhost:7777/login",{
+    const res=await axios.post("http://localhost:7777/login",{
       emailId:eml,
       password:pwd
     },{
       withCredentials: true // This allows cookies to be sent with the request
     })
+    
+    // console.log("Login successful:", res.data);
+    
+    dispatch(addUser(res.data)); // Dispatch the user data to the Redux store
+    // Optionally, you can redirect the user or show a success message
+    // For example, you might use React Router to navigate to a different page
+     return navigate("/");
      }catch(err){
     console.error("Login failed:", err);
   }
