@@ -5,6 +5,7 @@ import Login from './components/Login'; // Assuming you have a Login component
 import Profile from './components/Profile';
 import {Provider} from 'react-redux';
 import appStore from './utils/appStore'; // Import your Redux store
+import Feed from './components/Feed'; // Import the Feed component
 function App() {
   return (
     <>
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Body/>}>
         {/* children routes */}
      {/* login */}
+       <Route path="/" element={<Feed/>}></Route>
           <Route path="/login" element={<Login/>} />
           <Route path="/profile" element={<Profile/>} />
 

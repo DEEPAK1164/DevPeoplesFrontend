@@ -10,10 +10,13 @@ const userSlice = createSlice({
     removeUser: (state) => {
       return null
     },
+    logoutUser(state) {
+      state.data = null;
+    },
   },
 });
 
-export const {addUser, removeUser} = userSlice.actions;
+export const {addUser, removeUser,logoutUser } = userSlice.actions;
 export default userSlice.reducer;
 
 // This code defines a Redux slice for managing user state in a React application.

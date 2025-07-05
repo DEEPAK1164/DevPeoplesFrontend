@@ -1,25 +1,43 @@
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigation } from 'react-router-dom';
 // Importing useSelector to access Redux state if needed
 // If you need to access user data or any other state from Redux, you can use this
 // import { useSelector } from 'react-redux';
+import { logoutUser } from '../utils/userSlice'; // adjust path if needed
+import { useDispatch } from 'react-redux';
+
 
 function Navbar() {
+  const navigate=useNavigate();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
   const res = useSelector((store) => store.user); // Accessing user data from Redux store
-  console.log("User data from Redux:", res);
+  // console.log("User data from Redux:", res);
   // Hide dropdown when mouse leaves the dropdown box
   const handleMenuMouseLeave = () => setOpen(false);
+  
+const dispatch = useDispatch();
 
+const handleLogout = async () => {
+  try {
+    await axios.post("http://localhost:7777/logout", {}, { withCredentials: true });
+    dispatch(logoutUser()); // ✅ clears user from Redux
+    setOpen(false);         // close dropdown if open
+    navigate("/login");
+  } catch (err) {
+    console.error("Logout failed:", err);
+  }
+};
   return (
     <nav className="w-full bg-gradient-to-r from-pink-500 via-red-400 to-yellow-400 shadow-lg flex items-center justify-between px-6 py-4 fixed top-0 left-0 z-50">
       {/* App Name */}
-      <div className="flex items-center gap-2">
-        <span className="text-white text-3xl font-extrabold drop-shadow tracking-wide font-sans">
+           <div className="flex items-center gap-2">
+        <Link to="/" className="text-white text-3xl font-extrabold drop-shadow tracking-wide font-sans flex items-center gap-2">
           <span className="inline-block animate-bounce">🔥</span> DevPeoples
-        </span>
+        </Link>
       </div>
       {/* User Dropdown */}
       <div className="relative">
@@ -28,15 +46,13 @@ function Navbar() {
           onClick={() => setOpen((prev) => !prev)}
           aria-label="User menu"
         >
-          {res?.data?.photoUrl ? (
+          {res?.data?.photoUrl &&
             <img
               src={res.data.photoUrl}
               alt={res.data.firstName || "User"}
               className="w-10 h-10 rounded-full border-2 border-white shadow object-cover"
             />
-          ) : (
-            <span role="img" aria-label="User">👤</span>
-          )}
+          }
         </button>
         {open && (
           <div
@@ -47,12 +63,12 @@ function Navbar() {
           >
             <ul className="py-2">
               <li>
-                <a
-                  href="/profile"
+                <Link
+                  to="/profile"
                   className="block px-5 py-3 text-gray-700 font-semibold hover:bg-pink-50 rounded-xl transition"
                 >
                   Profile
-                </a>
+                </Link>
               </li>
               <li>
                 <a
@@ -71,7 +87,7 @@ function Navbar() {
                 </a>
               </li>
               <li>
-                <button
+                <button onClick={handleLogout}
                   className="w-full text-left px-5 py-3 text-gray-700 font-semibold hover:bg-pink-50 rounded-xl transition"
                 >
                   Logout
