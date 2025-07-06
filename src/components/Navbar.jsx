@@ -79,12 +79,12 @@ const handleLogout = async () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="/connections"
+                <Link
+                  to="/connections"
                   className="block px-5 py-3 text-gray-700 font-semibold hover:bg-pink-50 rounded-xl transition"
                 >
                   Connections
-                </a>
+                </Link>
               </li>
               <li>
                 <button onClick={handleLogout}
