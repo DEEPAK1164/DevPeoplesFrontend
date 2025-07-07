@@ -25,6 +25,8 @@ const fetchConnections=async()=>{
 useEffect(()=>{
     fetchConnections();
 },[]);
+
+
 if (!connections) return (
   <div className="flex justify-center items-center py-12">
     <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-pink-500"></div>
