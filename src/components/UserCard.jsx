@@ -1,5 +1,19 @@
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { removeUserFromFeed } from "../utils/feedSlice";
 const UserCard = ({ user }) => {
-  const { firstName, lastName, photoUrl, age, gender, about } = user;
+  const {_id, firstName, lastName, photoUrl, age, gender, about } = user;
+  const dispatch=useDispatch();
+  const handleSendRequest=async(status, userId)=>{
+     try{
+      const res= await axios.post("http://localhost:7777/request/send/"+status+"/"+userId,{},{withCredentials:true})
+      dispatch(removeUserFromFeed(userId));
+     }catch(err){
+        console.error('Error removing feed:', err);
+     }
+  }
+
+
 
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col h-full">
@@ -22,10 +36,10 @@ const UserCard = ({ user }) => {
         </div>
 
         <div className="flex justify-between mt-4">
-          <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-full transition">
+          <button onClick={()=>handleSendRequest('ignored',_id)} className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-full transition">
             Ignore
           </button>
-          <button className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-full transition">
+          <button onClick={()=>handleSendRequest('interested',_id)} className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-full transition">
             Interested ❤️
           </button>
         </div>

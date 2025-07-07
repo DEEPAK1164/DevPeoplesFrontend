@@ -41,19 +41,29 @@ const handleLogout = async () => {
       </div>
       {/* User Dropdown */}
       <div className="relative">
-        <button
-          className="p-2 rounded-full hover:bg-white/20 transition text-white text-3xl cursor-pointer flex items-center select-none"
-          onClick={() => setOpen((prev) => !prev)}
-          aria-label="User menu"
-        >
-          {res?.data?.photoUrl &&
-            <img
-              src={res.data.photoUrl}
-              alt={res.data.firstName || "User"}
-              className="w-10 h-10 rounded-full border-2 border-white shadow object-cover"
-            />
-          }
-        </button>
+       
+<div className="relative flex items-center gap-3">
+  {res?.data?.firstName && (
+    <span className="text-white font-semibold text-lg hidden sm:inline-block">
+      Welcome, {res.data.firstName}
+    </span>
+  )}
+
+  <button
+    className="p-1 rounded-full hover:bg-white/20 transition cursor-pointer flex items-center select-none"
+    onClick={() => setOpen((prev) => !prev)}
+    aria-label="User menu"
+  >
+    {res?.data?.photoUrl && (
+      <img
+        src={res.data.photoUrl}
+        alt={res.data.firstName || "User"}
+        className="w-10 h-10 rounded-full border-2 border-white shadow object-cover"
+      />
+    )}
+  </button>
+</div>
+
         {open && (
           <div
             ref={menuRef}
