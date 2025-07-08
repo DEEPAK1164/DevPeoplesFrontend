@@ -9,28 +9,51 @@ function Login() {
   const [pwd, setPassword] = useState("");
   const [eml, setEmailId] = useState("");
   const [error, setError] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:7777/login", {
-        emailId: eml,
-        password: pwd
-      }, {
-        withCredentials: true // Allow cookies
-      });
+      const res = await axios.post(
+        "http://localhost:7777/login",
+        { emailId: eml, password: pwd },
+        { withCredentials: true }
+      );
 
-      dispatch(addUser(res.data)); // Store user in Redux
-      navigate("/"); // Redirect to home
+      dispatch(addUser(res.data));
+      navigate("/");
     } catch (err) {
       console.error("Login failed:", err);
-      if (err.response?.data) {
-        setError(err.response.data);
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
+      setError(err.response?.data || "Something went wrong. Please try again.");
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:7777/signup",
+        { firstName, lastName, emailId: eml, password: pwd },
+        { withCredentials: true }
+      );
+
+      dispatch(addUser(res.data));
+      navigate("/profile");
+    } catch (err) {
+      console.error("Signup failed:", err);
+      setError(err.response?.data || "Something went wrong. Please try again.");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+    if (isLogin) {
+      handleLogin();
+    } else {
+      handleSignUp();
     }
   };
 
@@ -41,7 +64,37 @@ function Login() {
           {isLogin ? 'Login to DevPeoples' : 'Sign Up for DevPeoples'}
         </h2>
 
-        <form onSubmit={e => { e.preventDefault(); handleLogin(); }}>
+        <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 font-semibold" htmlFor="firstName">
+                First Name
+              </label>
+              <input
+                id="firstName"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-400"
+                placeholder="Enter your first name"
+                autoComplete="given-name"
+              />
+
+              <label className="block text-gray-700 mt-4 mb-2 font-semibold" htmlFor="lastName">
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-400"
+                placeholder="Enter your last name"
+                autoComplete="family-name"
+              />
+            </div>
+          )}
+
           <div className="mb-4">
             <label className="block text-gray-700 mb-2 font-semibold" htmlFor="email">
               Email
@@ -59,22 +112,6 @@ function Login() {
               autoComplete="username"
             />
           </div>
-
-          {!isLogin && (
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2 font-semibold" htmlFor="name">
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-400"
-                placeholder="Enter your name"
-                autoComplete="name"
-              />
-            </div>
-            
-          )}
 
           <div className="mb-6">
             <label className="block text-gray-700 mb-2 font-semibold" htmlFor="password">
@@ -94,7 +131,6 @@ function Login() {
             />
           </div>
 
-          {/* ✅ Error Message for both modes */}
           {error && (
             <div className="mb-4 text-red-500 text-sm font-medium text-center">
               {error}
