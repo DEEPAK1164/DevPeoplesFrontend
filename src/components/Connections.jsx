@@ -4,7 +4,7 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 
 import { addConnections } from "../utils/connectionSlice";
-
+import { Link } from "react-router-dom";
 const Connections=()=>{
 
 const connections=useSelector((store)=>store.connections);
@@ -66,6 +66,11 @@ console.log(connections);
                 <p className="text-gray-600 text-sm mt-2 italic">
                   {conn.about || 'No about info available.'}
                 </p>
+                <Link to={"/chat/"+conn._id}>
+                 <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md transition duration-300 ease-in-out cursor cursor-pointer">Chat</button>
+                </Link>
+              
+
               </div>
             </div>
           ))}
