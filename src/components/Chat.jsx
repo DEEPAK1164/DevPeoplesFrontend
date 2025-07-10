@@ -7,16 +7,24 @@ import { useSelector } from "react-redux";
 
 const Chat = () => {
   const { toUserId } = useParams();
-  const [messages, setMessages] = useState([{ text: "Hello Bro" }]);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const user = useSelector((store) => store.user);
   const loggedInUserId = user?.data?._id;
+  const firstName= user?.data?.firstName;
 
   useEffect(() => {
     if (!loggedInUserId) return;
 
     socket = createSocketConnection();
-    socket.emit("joinChat", { loggedInUserId, toUserId });
+    socket.emit("joinChat", {firstName, loggedInUserId, toUserId });
+
+    //client is receiving the message send by server
+   socket.on("messageReceived",({firstName,text})=>{
+     console.log(firstName+" "+text);
+     setMessages((messages)=>[...messages,{firstName,text}])
+   })
+
 
     return () => {
       socket.disconnect();
@@ -34,7 +42,7 @@ const Chat = () => {
       text: newMessage
     });
 
-
+  setNewMessage("");
   };
 
   return (
@@ -46,7 +54,7 @@ const Chat = () => {
       <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-white">
         {messages.map((ele, ind) => (
           <h1 key={ind}>{ele.text}</h1>
-        ))}
+        ))} 
       </div>
 
       <div className="flex items-center border-t p-3 bg-white">
