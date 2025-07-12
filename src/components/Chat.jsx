@@ -1,5 +1,5 @@
 let socket = null; // ✅ persistent socket
-
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createSocketConnection } from "../utils/socket";
@@ -13,6 +13,23 @@ const Chat = () => {
   const loggedInUserId = user?.data?._id;
   const firstName= user?.data?.firstName;
 
+const fetchChatMessages=async()=>{
+   const chat=await axios.get("http://localhost:7777/chat/"+toUserId,{withCredentials:true})
+   const chatMessages = chat?.data?.messages.map((msg) => ({
+  firstName: msg?.firstName,
+  lastName: msg?.lastName,
+  text: msg.text,
+  createdAt: msg.createdAt,
+  senderId: msg.senderId,
+}));
+
+   setMessages(chatMessages);
+}
+useEffect(()=>{
+  fetchChatMessages();
+},[])
+
+
   useEffect(() => {
     if (!loggedInUserId) return;
 
@@ -20,10 +37,14 @@ const Chat = () => {
     socket.emit("joinChat", {firstName, loggedInUserId, toUserId });
 
     //client is receiving the message send by server
-   socket.on("messageReceived",({firstName,text})=>{
-     console.log(firstName+" "+text);
-     setMessages((messages)=>[...messages,{firstName,text}])
-   })
+  socket.on("messageReceived", ({ firstName, lastName, text, createdAt, senderId }) => {
+  console.log(firstName + " " + text + " at " + createdAt);
+  setMessages((messages) => [
+    ...messages,
+    { firstName, lastName, text, createdAt, senderId }
+  ]);
+});
+
 
 
     return () => {
@@ -37,6 +58,7 @@ const Chat = () => {
 
     socket.emit("sendMessage", {
       firstName: user.data.firstName,
+      lastName:user.data.lastName,
       loggedInUserId,
       toUserId,
       text: newMessage
@@ -51,11 +73,29 @@ const Chat = () => {
         <h1 className="text-xl font-bold">Chat</h1>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-white">
-        {messages.map((ele, ind) => (
-          <h1 key={ind}>{ele.text}</h1>
-        ))} 
+    <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-white">
+  {messages.map((msg, index) => {
+    const isSender = msg.senderId === loggedInUserId;
+    return (
+      <div
+        key={index}
+        className={`flex flex-col ${isSender ? 'items-end' : 'items-start'}`}
+      >
+        <div className="text-xs text-gray-500 mb-1">
+          {msg.firstName} {msg.lastName} • {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </div>
+        <div
+          className={`max-w-xs px-4 py-2 rounded-2xl shadow 
+            ${isSender ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}
+          `}
+        >
+          {msg.text}
+        </div>
       </div>
+    );
+  })}
+</div>
+
 
       <div className="flex items-center border-t p-3 bg-white">
         <input
