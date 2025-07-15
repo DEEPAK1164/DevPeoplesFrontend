@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import { addConnections } from "../utils/connectionSlice";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "../utils/constant";
 const Connections=()=>{
 
 const connections=useSelector((store)=>store.connections);
@@ -12,7 +13,7 @@ const connections=useSelector((store)=>store.connections);
 const dispatch=useDispatch();
 const fetchConnections=async()=>{
    try{
-     const res=await axios.get("http://localhost:7777/user/connections",{withCredentials:true})
+     const res=await axios.get(BASE_URL+"/user/connections",{withCredentials:true})
     //  console.log(res.data);
    dispatch(addConnections(res.data["connections are"]));
    }catch(err){

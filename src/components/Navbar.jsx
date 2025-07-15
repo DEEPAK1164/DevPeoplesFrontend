@@ -8,6 +8,7 @@ import { useNavigation } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 import { logoutUser } from '../utils/userSlice'; // adjust path if needed
 import { useDispatch } from 'react-redux';
+import { BASE_URL } from '../utils/constant';
 
 
 function Navbar() {
@@ -23,7 +24,7 @@ const dispatch = useDispatch();
 
 const handleLogout = async () => {
   try {
-    await axios.post("http://localhost:7777/logout", {}, { withCredentials: true });
+    await axios.post(BASE_URL+"/logout", {}, { withCredentials: true });
     dispatch(logoutUser()); // ✅ clears user from Redux
     setOpen(false);         // close dropdown if open
     navigate("/login");

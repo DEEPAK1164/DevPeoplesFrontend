@@ -3,6 +3,7 @@ import UserCard from "./UserCard";
 import { useDispatch } from "react-redux";
 import { addUser } from '../utils/userSlice';
 import axios from "axios";
+import { BASE_URL } from "../utils/constant";
 const EditProfile = ({ obj }) => {
   const [firstName, setFirstName] = useState(obj?.data?.firstName);
   const [lastName, setLastName] = useState(obj?.data?.lastName);
@@ -17,7 +18,7 @@ const EditProfile = ({ obj }) => {
    const saveProfile=async()=>{
        
     try{
-      const res=await axios.patch("http://localhost:7777/profile/edit",{ firstName, lastName, photoUrl, age, gender, about },{withCredentials:true});
+      const res=await axios.patch(BASE_URL+"/profile/edit",{ firstName, lastName, photoUrl, age, gender, about },{withCredentials:true});
        dispatch(addUser(res.data.data))
         setSuccess("Profile updated successfully! ✅"); // ✅ Set success message
         setError("");

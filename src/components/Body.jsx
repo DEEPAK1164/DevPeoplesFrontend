@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { addUser } from '../utils/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../utils/constant';
 function Body() {
 
 const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const fetchUser = async () => {
     }
 
   try {
-    const res=await axios.get("http://localhost:7777/profile/view",{withCredentials: true});
+    const res=await axios.get(BASE_URL+"/profile/view",{withCredentials: true});
     dispatch(addUser(res.data));
   }catch (err) {
     if(err.status === 401) {

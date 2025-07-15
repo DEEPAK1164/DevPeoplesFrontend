@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../utils/constant';
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,7 +19,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:7777/login",
+        BASE_URL+"/login",
         { emailId: eml, password: pwd },
         { withCredentials: true }
       );
@@ -34,7 +35,7 @@ function Login() {
   const handleSignUp = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:7777/signup",
+        BASE_URL+"/signup",
         { firstName, lastName, emailId: eml, password: pwd },
         { withCredentials: true }
       );
