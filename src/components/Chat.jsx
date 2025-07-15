@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
+import { isToday, isYesterday, format } from "date-fns";
 
 const Chat = () => {
   const { toUserId } = useParams();
@@ -67,6 +68,27 @@ useEffect(()=>{
   setNewMessage("");
   };
 
+  const getChatTimestamp = (dateStr) => {
+  const date = new Date(dateStr);
+
+  if (isToday(date)) {
+    return format(date, "hh:mm a"); // e.g., "12:45 PM"
+  }
+
+  if (isYesterday(date)) {
+    return "Yesterday";
+  }
+
+  const diffInDays = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (diffInDays < 7) {
+    return format(date, "EEE"); // e.g., "Mon", "Tue"
+  }
+
+  return format(date, "dd MMM"); // e.g., "12 Jul"
+};
+
+
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       <header className="bg-blue-600 text-white px-4 py-3 shadow-md flex items-center justify-between">
@@ -81,9 +103,10 @@ useEffect(()=>{
         key={index}
         className={`flex flex-col ${isSender ? 'items-end' : 'items-start'}`}
       >
-        <div className="text-xs text-gray-500 mb-1">
-          {msg.firstName} {msg.lastName} • {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </div>
+      <div className="text-xs text-gray-500 mb-1">
+        {msg.firstName} {msg.lastName} • {getChatTimestamp(msg.createdAt)}
+     </div>
+
         <div
           className={`max-w-xs px-4 py-2 rounded-2xl shadow 
             ${isSender ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}
