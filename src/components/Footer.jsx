@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -31,10 +32,9 @@ function Footer() {
             &copy; {new Date().getFullYear()} DevPeoples. All rights reserved.
           </div>
           <div className="flex gap-4">
-            <a href="/about" className="hover:underline">About</a>
-            <a href="/privacy" className="hover:underline">Privacy</a>
-            <a href="/terms" className="hover:underline">Terms</a>
-            <a href="/contact" className="hover:underline">Contact</a>
+            <Link to="/about" className="hover:underline">About</Link>
+            <Link to="/privacy" className="hover:underline">Privacy</Link>
+            <Link to="/terms" className="hover:underline">Terms</Link>
           </div>
         </div>
       </div>
