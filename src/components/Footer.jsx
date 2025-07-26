@@ -35,6 +35,9 @@ function Footer() {
             <Link to="/about" className="hover:underline">About</Link>
             <Link to="/privacy" className="hover:underline">Privacy</Link>
             <Link to="/terms" className="hover:underline">Terms</Link>
+            <Link to="/contact" className="hover:underline">Contact Us</Link>
+             <Link to="/pricing" className="hover:underline">Pricing</Link>
+            <Link to="/refund" className="hover:underline">Refund Policy</Link>
           </div>
         </div>
       </div>
